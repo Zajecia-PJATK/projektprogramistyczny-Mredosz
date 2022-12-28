@@ -18,6 +18,10 @@ struct zero_point{
 
 int** create_matrix(int n,int m);
 void move();
+// Graphic interface
+void gui(int** arr,int size);
+int numbers(int num);
+
 
 
 
@@ -25,7 +29,7 @@ void move();
 int main(){
     //Enter file name and say hello to players
     string file_name;
-    cout<<"                                             HELLO TO MY 2048 GAME" <<endl;
+    cout<<"                   HELLO TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
     cin>>file_name;
     const char *name=file_name.c_str();
@@ -40,7 +44,7 @@ int main(){
     //Load file
     fstream file1;
     file1.open(name,ios::in);
-    if (!file1.is_open()){
+    if (!file1.fail()){
 
         file1>>size->x;
         for (int i = 0; i < size->x; ++i) {
@@ -66,7 +70,8 @@ int main(){
 
     }
     file1.close();
-
+    //Gui
+    gui(arr,size->x);
 
    //Delete array
 
@@ -89,4 +94,40 @@ int** create_matrix(int n,int m){
 
     }
     return tablica;
+}
+void gui(int** arr,int size){
+
+    int right, left;
+    for (right = 0;right  < size; ++right) {
+        for (int top = 1; top <= size ; ++top) {
+            cout<<"   --------- ";
+        }
+        cout<<endl;
+
+        for (int u = 1; u < 3; ++u) {
+            for (left = 0; left < size; ++left) {
+                if (u==2 && arr[right][left]!= 0){
+
+                    cout << "  |    " << arr[right][left];
+                    for (int space = 0; space < 5- numbers(arr[right][left]); ++space) {
+                        cout<<" ";
+                        cout<<"|";
+                    }
+                }else cout << "  |         |";
+            }
+            cout<<endl;
+        }
+        for (int down = 1; down <= size; ++down) {
+            cout << "   --------- ";
+        }
+        cout<<endl;
+    }
+}
+int numbers(int num){
+    int i=0;
+    while (num>0){
+        num /= 10;
+        i++;
+    }
+    return i;
 }
