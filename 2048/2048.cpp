@@ -10,8 +10,11 @@ using namespace std;
 
 
 struct zero_point{
-    int i,j,length,width;
+    int length;
+    int x,y;
 };
+
+
 
 int** create_matrix(int n,int m);
 void move();
@@ -23,17 +26,58 @@ int main(){
     //Enter file name and say hello to players
     string file_name;
     cout<<"                                             HELLO TO MY 2048 GAME" <<endl;
+    cout<<"Enter name of the file new or saved game: "<<endl;
     cin>>file_name;
+    const char *name=file_name.c_str();
 
     //Enter length and width and create matrix
 
-    zero_point *dimension = new zero_point;
-    cout<<"Enter length of the board: "<<endl;
-    cin>>dimension->length;
-    cout<<"Enter width of the board: "<<endl;
-    cin>>dimension->width;
-   int** arr= create_matrix( dimension->length, dimension->width);
+   zero_point *size = new zero_point;
 
+    int** arr= create_matrix( size->x, size->x);
+
+    //load and create file
+    //Load file
+    fstream file1;
+    file1.open(name,ios::in);
+    if (!file1.is_open()){
+
+        file1>>size->x;
+        for (int i = 0; i < size->x; ++i) {
+            for (int j = 0; j < size->x; ++j) {
+
+                file1>>arr[i][j];
+            }
+        }
+    }else{
+        //create file
+        cout<<"Enter size of the board: "<<endl;
+        cin>>size->x;
+
+        for (int i = 0; i < size->x; ++i) {
+            for (int j = 0; j < size->x; ++j) {
+                arr[i][j]=0;
+            }
+        }
+        //Random
+        srand(time(0));
+        arr[rand()%size->x][rand()%size->y]=2;
+        arr[rand()%size->x][rand()%size->y]=2;
+
+    }
+    file1.close();
+
+
+   //Delete array
+
+    for (int i = 0; i < size->x; ++i) {
+
+        delete[] arr[i];
+    }
+    delete [] arr;
+
+    //Delete structure
+    delete size;
 
     return 0;
 }
