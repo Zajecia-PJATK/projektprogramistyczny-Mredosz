@@ -9,8 +9,8 @@
 using namespace std;
 
 
-struct zero_point{
-    int length;
+struct size1{
+
     int x,y;
 };
 
@@ -21,7 +21,7 @@ void move();
 // Graphic interface
 void gui(int** arr,int size);
 int numbers(int num);
-
+int** arr;
 
 
 
@@ -36,9 +36,9 @@ int main(){
 
     //Enter length and width and create matrix
 
-   zero_point *size = new zero_point;
+    auto *size = new size1;
 
-    int** arr= create_matrix( size->x, size->x);
+    arr= create_matrix( size->x, size->x);
 
     //load and create file
     //Load file
@@ -73,7 +73,7 @@ int main(){
     //Gui
     gui(arr,size->x);
 
-   //Delete array
+    //Delete array
 
     for (int i = 0; i < size->x; ++i) {
 
@@ -97,22 +97,22 @@ int** create_matrix(int n,int m){
 }
 void gui(int** arr,int size){
 
-    int right, left;
-    for (right = 0;right  < size; ++right) {
+    int r, l;
+    for (r = 0;r  < size; ++r) {
         for (int top = 1; top <= size ; ++top) {
             cout<<"   --------- ";
         }
         cout<<endl;
 
-        for (int u = 1; u < 3; ++u) {
-            for (left = 0; left < size; ++left) {
-                if (u==2 && arr[right][left]!= 0){
+        for (int u = 1; u <= 3; ++u) {
+            for (l = 0; l < size; ++l) {
+                if (u==2 && arr[r][l]!= 0){
 
-                    cout << "  |    " << arr[right][left];
-                    for (int space = 0; space < 5- numbers(arr[right][left]); ++space) {
+                    cout << "  |    " << arr[r][l];
+                    for (int space = 0; space < 5- numbers(arr[r][l]); ++space)
                         cout<<" ";
                         cout<<"|";
-                    }
+
                 }else cout << "  |         |";
             }
             cout<<endl;
