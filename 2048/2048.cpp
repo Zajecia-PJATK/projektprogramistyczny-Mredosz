@@ -13,7 +13,7 @@ struct graphic_interface{
 };
 
 int** create_matrix(int n,int m); // Create dynamic matrix
-void move();
+void move(); //function to move
 // Graphic interface
 void gui();
 int numbers(int num);
@@ -27,9 +27,12 @@ int main(){
     string file_name;
     cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
+    // don't need press enter
+    system("stty raw");
     cin>>file_name;
-    const char *name=file_name.c_str();
+    system("stty cooked");
 
+    const char *name=file_name.c_str();
 
     arr= create_matrix( size1, size1); //create matrix
     //load and create file
@@ -119,7 +122,5 @@ int numbers(int num){
     return i;
 }
 void move(){
-
-
 
 }
