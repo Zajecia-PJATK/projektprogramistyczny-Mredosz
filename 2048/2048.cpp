@@ -5,9 +5,12 @@
 #include <fstream>
 #include <cstdlib>
 using namespace std;
-struct zero_points{
-
+struct zero_point{
+    int length;
     int x,y;
+};
+struct graphic_interface{
+    int r,l,top,down,space,x;
 };
 
 int** create_matrix(int n,int m);
@@ -28,7 +31,7 @@ int main(){
     cin>>file_name;
     const char *name=file_name.c_str();
     //Enter length and width and create matrix
-    auto *size = new zero_points;
+    auto *size = new zero_point;
     arr= create_matrix( size->x, size->x);
     //load and create file
     //Load file
@@ -52,7 +55,7 @@ int main(){
             }
         }
         //Random
-        srand(time(0));
+        srand(time(nullptr));
         arr[rand()%size->x][rand()%size->y]=2;
         arr[rand()%size->x][rand()%size->y]=2;
 
@@ -80,20 +83,20 @@ int** create_matrix(int n,int m){
     return tablica;
 }
 void gui(int size){
+auto* gui1 = new graphic_interface;
 
-    int r, l;
-    for (r = 0;r  < size; ++r) {
-        for (int top = 1; top <= size ; ++top) {
+    for (gui1->r = 0;gui1->r  < size; ++gui1->r) {
+        for (gui1->top = 1; gui1->top <= size ; ++gui1->top) {
             cout<<"   --------- ";
         }
         cout<<endl;
 
-        for (int u = 1; u <= 3; ++u) {
-            for (l = 0; l < size; ++l) {
-                if (u==2 && arr[r][l]!= 0){
+        for (gui1->x = 1; gui1->x <= 3; ++gui1->x) {
+            for (gui1->l = 0; gui1->l < size; ++gui1->l) {
+                if (gui1->x==2 && arr[gui1->r][gui1->l]!= 0){
 
-                    cout << "  |    " << arr[r][l];
-                    for (int space = 0; space < 5- numbers(arr[r][l]); ++space)
+                    cout << "  |    " << arr[gui1->r][gui1->l];
+                    for (gui1->space = 0; gui1->space < 5- numbers(arr[gui1->r][gui1->l]); ++gui1->space)
                         cout<<" ";
                         cout<<"|";
 
@@ -101,11 +104,12 @@ void gui(int size){
             }
             cout<<endl;
         }
-        for (int down = 1; down <= size; ++down) {
+        for (gui1->down = 1; gui1->down <= size; ++gui1->down) {
             cout << "   --------- ";
         }
         cout<<endl;
     }
+    delete gui1;
 }
 int numbers(int num){
     int i=0;
