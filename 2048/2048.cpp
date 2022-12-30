@@ -4,21 +4,20 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#define size1 4
+
 using namespace std;
-struct zero_point{
-    int length;
-    int x,y;
-};
+
 struct graphic_interface{
     int r,l,top,down,space,x;
 };
 
-int** create_matrix(int n,int m);
+int** create_matrix(int n,int m); // Create dynamic matrix
 void move();
 // Graphic interface
-void gui(int size);
+void gui();
 int numbers(int num);
-int** arr;
+int** arr; //global dynamic matrix
 
 
 
@@ -26,52 +25,50 @@ int** arr;
 int main(){
     //Enter file name and say hello to players
     string file_name;
-    cout<<"                   HELLO TO MY 2048 GAME" <<endl;
+    cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
     cin>>file_name;
     const char *name=file_name.c_str();
-    //Enter length and width and create matrix
-    auto *size = new zero_point;
-    arr= create_matrix( size->x, size->x);
+
+
+    arr= create_matrix( size1, size1); //create matrix
     //load and create file
-    //Load file
+    //Load saved file
     fstream file1;
     file1.open(name,ios::in);
     if (!file1.fail()){
 
-        file1>>size->x;
-        for (int i = 0; i < size->x; ++i) {
-            for (int j = 0; j < size->x; ++j) {
+        for (int i = 0; i < size1; ++i) {
+            for (int j = 0; j < size1; ++j) {
                 file1>>arr[i][j];
             }
         }
     }else{
-        //create file
-        cout<<"Enter size of the board: "<<endl;
-        cin>>size->x;
-        for (int i = 0; i < size->x; ++i) {
-            for (int j = 0; j < size->x; ++j) {
+        //create new file
+
+        for (int i = 0; i < size1; ++i) {
+            for (int j = 0; j < size1; ++j) {
                 arr[i][j]=0;
             }
         }
-        //Random
+        //ADD random 2 at board
         srand(time(nullptr));
-        arr[rand()%size->x][rand()%size->y]=2;
-        arr[rand()%size->x][rand()%size->y]=2;
+       arr[rand()%size1][rand()%size1]=2;
+       arr[rand()%size1][rand()%size1]=2;
 
     }
     file1.close();
     //Gui
-    gui(size->x);
+    gui();
 
     //Delete array
 
-    for (int i = 0; i < size->x; ++i) {
+    for (int i = 0; i < size1; ++i) {
         delete[] arr[i];
     }
     delete [] arr;
     //Delete structure
-    delete size;
+
     return 0;
 }
 int** create_matrix(int n,int m){
@@ -82,29 +79,31 @@ int** create_matrix(int n,int m){
     }
     return tablica;
 }
-void gui(int size){
+void gui(){
 auto* gui1 = new graphic_interface;
-
-    for (gui1->r = 0;gui1->r  < size; ++gui1->r) {
-        for (gui1->top = 1; gui1->top <= size ; ++gui1->top) {
+//Top of square
+    for (gui1->r = 0;gui1->r  < size1; ++gui1->r) {
+        for (gui1->top = 1; gui1->top <= size1 ; ++gui1->top) {
             cout<<"   --------- ";
         }
         cout<<endl;
-
+//Left and right of square
         for (gui1->x = 1; gui1->x <= 3; ++gui1->x) {
-            for (gui1->l = 0; gui1->l < size; ++gui1->l) {
+            for (gui1->l = 0; gui1->l < size1; ++gui1->l) {
                 if (gui1->x==2 && arr[gui1->r][gui1->l]!= 0){
 
                     cout << "  |    " << arr[gui1->r][gui1->l];
-                    for (gui1->space = 0; gui1->space < 5- numbers(arr[gui1->r][gui1->l]); ++gui1->space)
-                        cout<<" ";
-                        cout<<"|";
+                    for (gui1->space = 0; gui1->space < 5- numbers(arr[gui1->r][gui1->l]); ++gui1->space) {
+                        cout << " ";
+                    }
+                        cout << "|";
 
                 }else cout << "  |         |";
             }
             cout<<endl;
         }
-        for (gui1->down = 1; gui1->down <= size; ++gui1->down) {
+//bottom of square
+        for (gui1->down = 1; gui1->down <= size1; ++gui1->down) {
             cout << "   --------- ";
         }
         cout<<endl;
@@ -118,4 +117,9 @@ int numbers(int num){
         i++;
     }
     return i;
+}
+void move(){
+
+
+
 }
