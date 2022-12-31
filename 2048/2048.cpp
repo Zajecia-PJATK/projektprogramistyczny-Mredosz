@@ -11,13 +11,26 @@ using namespace std;
 struct graphic_interface{
     int r,l,top,down,space,x;
 };
+struct game{
+    int score;
+};
 
-int** create_matrix(int n,int m); // Create dynamic matrix
+//void functions
 void move(); //function to move
-// Graphic interface
-void gui();
+void gui();  // Graphic interface
+void undo(); //undo players move
+void menu();
+
+// int functions
 int numbers(int num);
-int** arr; //global dynamic matrix
+
+//int** functions
+int** create_matrix(int n,int m); // Create dynamic matrix
+
+//global dynamic matrix
+int** arr;
+int** arr2;
+
 
 
 
@@ -27,6 +40,9 @@ int main(){
     string file_name;
     cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
+
+    menu();
+
     // don't need press enter
     system("stty raw");
     cin>>file_name;
@@ -34,7 +50,10 @@ int main(){
 
     const char *name=file_name.c_str();
 
+    auto* game1 = new game;
+
     arr= create_matrix( size1, size1); //create matrix
+    arr2 = create_matrix(size1,size1);
     //load and create file
     //Load saved file
     fstream file1;
@@ -46,6 +65,7 @@ int main(){
                 file1>>arr[i][j];
             }
         }
+        file1>>game1->score;
     }else{
         //create new file
 
@@ -54,6 +74,7 @@ int main(){
                 arr[i][j]=0;
             }
         }
+        game1->score = 0;
         //ADD random 2 at board
         srand(time(nullptr));
        arr[rand()%size1][rand()%size1]=2;
@@ -71,6 +92,7 @@ int main(){
     }
     delete [] arr;
     //Delete structure
+    delete game1;
 
     return 0;
 }
@@ -94,7 +116,7 @@ auto* gui1 = new graphic_interface;
         for (gui1->x = 1; gui1->x <= 3; ++gui1->x) {
             for (gui1->l = 0; gui1->l < size1; ++gui1->l) {
                 if (gui1->x==2 && arr[gui1->r][gui1->l]!= 0){
-
+//Display numbers on GUI
                     cout << "  |    " << arr[gui1->r][gui1->l];
                     for (gui1->space = 0; gui1->space < 5- numbers(arr[gui1->r][gui1->l]); ++gui1->space) {
                         cout << " ";
@@ -122,5 +144,29 @@ int numbers(int num){
     return i;
 }
 void move(){
+
+    int shom;
+    shom = size1 -1;
+    int  temp = -1;
+
+    for (int i = 0; i < size1; ++i) {
+        for (int j = size1 - 1; j >=0 ; --j) {
+            if (arr[j][i] && temp != arr[j][i]){
+                temp = arr[j][i];
+                arr[j][i] = arr[shom][i];
+                arr[shom][i] = temp;
+                shom--;
+            }else if (arr[j][i]){
+                arr[shom + 1][i] = 2*arr[shom  + 1][i];
+                arr[j][i] = 0;
+                temp = -1;
+            }
+        }
+    }
+}
+void menu(){
+
+
+
 
 }
