@@ -19,7 +19,8 @@ struct game{
 void move(); //function to move
 void gui();  // Graphic interface
 void undo(); //undo players move
-void menu();
+void menu(char option);
+void rotation(char option);
 
 // int functions
 int numbers(int num);
@@ -41,7 +42,10 @@ int main(){
     cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
 
-    menu();
+
+    char option;
+    cin>>option;
+    menu(option);
 
     // don't need press enter
     system("stty raw");
@@ -164,9 +168,50 @@ void move(){
         }
     }
 }
-void menu(){
+void rotation(char option){
+
+    int temp,shom;
+    switch (option) {
+
+        case 's':
+            shom = 0;
+            break;
+        case 'd':
+            shom  = 1;
+            break;
+        case 'w':
+            shom = 2;
+            break;
+        case 'a':
+            shom = 3;
+            break;
+    }
+    while (shom--){
+        for (int i = 0; i < size1; ++i) {
+            for (int j = 0; j < size1; ++j) {
+                if (i > j){
+                    temp = arr[i][j];
+                    arr[i][j] = arr[j][i];
+                    arr[j][i] = temp;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < size1; ++i) {
+        for (int j = 0; j < size1/2; ++j) {
+            temp  = arr[i][j];
+            arr[i][j] = arr[i][size1 - j -1];
+            arr[i][size1 - j -1] = temp;
+        }
+    }
+}
+void menu(char option){
+
+    switch (option) {
+        case 'q':
 
 
+    }
 
 
 }
