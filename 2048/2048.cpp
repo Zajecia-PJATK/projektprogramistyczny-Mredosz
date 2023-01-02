@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnreachableCode"
 #define size1 4
 
 using namespace std;
@@ -37,15 +39,19 @@ int** arr2;
 
 
 int main(){
+
+    bool check;
+    int random1;
+
     //Enter file name and say hello to players
     string file_name;
     cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
     cout<<"Enter name of the file new or saved game: "<<endl;
 
 
-//    char option;
-//    cin>>option;
-//    menu(option);
+//    char x;
+//    cin>>x;
+//    menu(x);
 
     // don't need press enter
     system("stty raw");
@@ -86,11 +92,64 @@ int main(){
 
     }
     file1.close();
-    //Gui
+
+    char option;
+
     gui();
 
-    //Delete array
+    while (true){
+        cout<< "Insert your next move: ";
 
+        check = true;
+        while (check == true){
+            check = false;
+            system("stty raw");
+            cin>>option;
+            system("stty cooked");
+
+            if (option != 'w' && option != 's' && option != 'a' && option != 'd'){
+                check = true;
+                cout << "try these keys to move: \n"
+                      "( w(up)\n"
+                      "  s(down)\n"
+                      "  a(left)\n"
+                      "  d(right) )\n";
+            }
+        }
+
+        rotation(option);
+        move();
+        if (option == 'a') {
+            option = 'd';
+        } else if (option == 'd') {
+            option = 'a';
+        }
+
+        rotation(option);
+
+        cout<<"SCORE:   "<<endl;
+        while (true){
+            random1 = rand() % size1;
+
+            if (arr[random1][random1] == 0){
+                arr[random1][random1] = 2;
+                break;
+            }
+        }
+        gui();
+        file1.open(name,ios::out);
+
+        for (int i = 0; i < size1; ++i) {
+            for (int j = 0; j < size1; ++j) {
+                file1<<arr[i][j]<<endl;
+            }
+        }
+        file1<<game1->score<<endl;
+
+        file1.close();
+    }
+
+    //Delete array
     for (int i = 0; i < size1; ++i) {
         delete[] arr[i];
     }
@@ -149,12 +208,12 @@ int numbers(int num){
 }
 void move(){
 
-    int shom;
+    int shom,temp;
 
     for (int i = 0; i < size1; ++i) {
 
         shom = size1 -1;
-        int  temp = -1;
+        temp = -1;
 
         for (int j = size1 - 1; j >=0 ; --j) {
             if (arr[j][i] && temp != arr[j][i]){
