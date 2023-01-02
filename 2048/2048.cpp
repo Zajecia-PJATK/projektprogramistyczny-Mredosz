@@ -43,9 +43,9 @@ int main(){
     cout<<"Enter name of the file new or saved game: "<<endl;
 
 
-    char option;
-    cin>>option;
-    menu(option);
+//    char option;
+//    cin>>option;
+//    menu(option);
 
     // don't need press enter
     system("stty raw");
@@ -81,8 +81,8 @@ int main(){
         game1->score = 0;
         //ADD random 2 at board
         srand(time(nullptr));
-       arr[rand()%size1][rand()%size1]=2;
-       arr[rand()%size1][rand()%size1]=2;
+        arr[rand()%size1][rand()%size1]=2;
+        arr[rand()%size1][rand()%size1]=2;
 
     }
     file1.close();
@@ -109,7 +109,7 @@ int** create_matrix(int n,int m){
     return tablica;
 }
 void gui(){
-auto* gui1 = new graphic_interface;
+    auto* gui1 = new graphic_interface;
 //Top of square
     for (gui1->r = 0;gui1->r  < size1; ++gui1->r) {
         for (gui1->top = 1; gui1->top <= size1 ; ++gui1->top) {
@@ -125,7 +125,7 @@ auto* gui1 = new graphic_interface;
                     for (gui1->space = 0; gui1->space < 5- numbers(arr[gui1->r][gui1->l]); ++gui1->space) {
                         cout << " ";
                     }
-                        cout << "|";
+                    cout << "|";
 
                 }else cout << "  |         |";
             }
@@ -150,10 +150,12 @@ int numbers(int num){
 void move(){
 
     int shom;
-    shom = size1 -1;
-    int  temp = -1;
 
     for (int i = 0; i < size1; ++i) {
+
+        shom = size1 -1;
+        int  temp = -1;
+
         for (int j = size1 - 1; j >=0 ; --j) {
             if (arr[j][i] && temp != arr[j][i]){
                 temp = arr[j][i];
@@ -186,32 +188,33 @@ void rotation(char option){
             shom = 3;
             break;
     }
-    while (shom--){
+    while (shom--) {
         for (int i = 0; i < size1; ++i) {
             for (int j = 0; j < size1; ++j) {
-                if (i > j){
+                if (i > j) {
                     temp = arr[i][j];
                     arr[i][j] = arr[j][i];
                     arr[j][i] = temp;
                 }
             }
         }
-    }
-    for (int i = 0; i < size1; ++i) {
-        for (int j = 0; j < size1/2; ++j) {
-            temp  = arr[i][j];
-            arr[i][j] = arr[i][size1 - j -1];
-            arr[i][size1 - j -1] = temp;
+
+        for (int i = 0; i < size1; ++i) {
+            for (int j = 0; j < size1 / 2; ++j) {
+                temp = arr[i][j];
+                arr[i][j] = arr[i][size1 - j - 1];
+                arr[i][size1 - j - 1] = temp;
+            }
         }
     }
 }
 void menu(char option){
 
-    switch (option) {
-        case 'q':
-
-
-    }
+//    switch (option) {
+//        case 'q':
+//
+//
+//    }
 
 
 }
