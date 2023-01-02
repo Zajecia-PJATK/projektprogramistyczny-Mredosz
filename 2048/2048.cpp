@@ -4,8 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnreachableCode"
 #define size1 4
 
 using namespace std;
