@@ -39,12 +39,25 @@ int** arr2;
 
 
 int main() {
-
+    char zero;
     string file_name;
 
     // say hello to players
 
-    cout << "         HELLO AND WELCOME TO MY 2048 GAME\n\n\n";
+    cout << "\t\t   ___       __   __ __       __     \n"
+            "\t\t /'___`\\   /'__`\\/\\ \\\\ \\    /'_ `\\   \n"
+            "\t\t/\\_\\ /\\ \\ /\\ \\/\\ \\ \\ \\\\ \\  /\\ \\L\\ \\  \n"
+            "\t\t\\/_/// /__\\ \\ \\ \\ \\ \\ \\\\ \\_\\/_> _ <_ \n"
+            "\t\t   // /_\\ \\\\ \\ \\_\\ \\ \\__ ,__\\/\\ \\L\\ \\\n"
+            "\t\t  /\\______/ \\ \\____/\\/_/\\_\\_/\\ \\____/\n"
+            "\t\t  \\/_____/   \\/___/    \\/_/   \\/___/ \n\n\n";
+
+    cout<<"\t\t\tPress any key to continue\n";
+
+    system("stty raw");
+    cin>>zero;
+    system("stty cooked");
+    clear_screen();
 
     auto *game1 = new game;
 
@@ -58,7 +71,7 @@ int main() {
     cout << "3. Instruction\n";
     cout << "4. Quit\n";
 
-    int choise;
+    char choise;
     system("stty raw");
     cin >> choise;
     system("stty cooked");
@@ -70,7 +83,7 @@ int main() {
     while (true){
 
         switch (choise) {
-            case 1:
+            case '1':
                 cout << "Inster your name game\n";
 
                 cin >> file_name;
@@ -111,7 +124,7 @@ int main() {
                 }
                 cout<< "GAME OVER\n";
                 break;
-            case 2:
+            case '2':
                 cout << "Inster your name game\n";
 
                 cin >> file_name;
@@ -144,7 +157,7 @@ int main() {
                 }
                 cout<< "GAME OVER\n";
                 break;
-            case 3:
+            case '3':
                 cout << "This is instruction to 2048\n";
                 cout << "This game is very simple.\n"
                         "To move you use the keys w (up), s (down), a (left), d (right).\n"
@@ -153,7 +166,8 @@ int main() {
                         "Good luck";
 
                 break;
-            case 4:
+
+            case '4':
                 return 0;
                 break;
         }
