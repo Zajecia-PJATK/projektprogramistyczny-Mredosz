@@ -19,7 +19,8 @@ struct game{
 void move(); //function to move
 void gui();  // Graphic interface
 void undo(); //undo players move
-void menu(char option);
+void game2();
+
 void rotation(char option);
 
 // int functions
@@ -33,120 +34,123 @@ int** arr;
 int** arr2;
 
 
+int main() {
 
-
-
-int main(){
-
-    bool check;
-    int random1;
-
-    //Enter file name and say hello to players
     string file_name;
-    cout<<"         HELLO AND WELCOME TO MY 2048 GAME" <<endl;
-    cout<<"Enter name of the file new or saved game: "<<endl;
 
+    // say hello to players
 
-//    char x;
-//    cin>>x;
-//    menu(x);
+    cout << "         HELLO AND WELCOME TO MY 2048 GAME\n\n\n";
 
-    // don't need press enter
-    system("stty raw");
-    cin>>file_name;
-    system("stty cooked");
+    auto *game1 = new game;
 
-    const char *name=file_name.c_str();
-
-    auto* game1 = new game;
-
-    arr= create_matrix( size1, size1); //create matrix
-    arr2 = create_matrix(size1,size1);
+    arr = create_matrix(size1, size1); //create matrix
+    arr2 = create_matrix(size1, size1);
     //load and create file
     //Load saved file
+    cout << "Chose option: " << endl;
+    cout << "1. Start New Game\n";
+    cout << "2. Load Previous Game\n";
+    cout << "3. Instruction\n";
+    cout << "4. Quit\n";
+
+    int choise;
+    system("stty raw");
+    cin >> choise;
+    system("stty cooked");
     fstream file1;
-    file1.open(name,ios::in);
-    if (!file1.fail()){
 
-        for (int i = 0; i < size1; ++i) {
-            for (int j = 0; j < size1; ++j) {
-                file1>>arr[i][j];
-            }
-        }
-        file1>>game1->score;
-    }else{
-        //create new file
 
-        for (int i = 0; i < size1; ++i) {
-            for (int j = 0; j < size1; ++j) {
-                arr[i][j]=0;
-            }
-        }
-        game1->score = 0;
-        //ADD random 2 at board
-        srand(time(nullptr));
-        arr[rand()%size1][rand()%size1]=2;
-        arr[rand()%size1][rand()%size1]=2;
 
-    }
-    file1.close();
-
-    char option;
-
-    gui();
-
+    const char *name = file_name.c_str();
     while (true){
-        cout<< "Insert your next move: ";
 
-        check = true;
-        while (check == true){
-            check = false;
-            system("stty raw");
-            cin>>option;
-            system("stty cooked");
+    switch (choise) {
+        case 1:
+            cout << "Inster your name game\n";
 
-            if (option != 'w' && option != 's' && option != 'a' && option != 'd'){
-                check = true;
-                cout << "try these keys to move: \n"
-                      "( w(up)\n"
-                      "  s(down)\n"
-                      "  a(left)\n"
-                      "  d(right) )\n";
+            cin >> file_name;
+
+            file1.open(name, ios::in);
+            for (int i = 0; i < size1; ++i) {
+                for (int j = 0; j < size1; ++j) {
+                    arr[i][j] = 0;
+                }
             }
-        }
+            game1->score = 0;
+            //ADD random 2 at board
+            srand(time(nullptr));
+            arr[rand() % size1][rand() % size1] = 2;
+            arr[rand() % size1][rand() % size1] = 2;
+            file1.close();
+            gui();
 
-        rotation(option);
-        move();
-        if (option == 'a') {
-            option = 'd';
-        } else if (option == 'd') {
-            option = 'a';
-        }
+            while (true) {
 
-        rotation(option);
+                game2();
 
-        cout<<"SCORE:   "<<endl;
-        while (true){
-            random1 = rand() % size1;
+                file1.open(name, ios::out);
 
-            if (arr[random1][random1] == 0){
-                arr[random1][random1] = 2;
-                break;
+                //save
+                for (int i = 0; i < size1; ++i) {
+                    for (int j = 0; j < size1; ++j) {
+                        file1 << arr[i][j] << endl;
+                    }
+                }
+                file1 << game1->score << endl;
+
+                file1.close();
+
             }
-        }
-        gui();
-        file1.open(name,ios::out);
+            cout<< "GAME OVER\n";
+            break;
+        case 2:
+            cout << "Inster your name game\n";
 
-        for (int i = 0; i < size1; ++i) {
-            for (int j = 0; j < size1; ++j) {
-                file1<<arr[i][j]<<endl;
+            cin >> file_name;
+
+
+            file1.open(name, ios::in);
+            for (int i = 0; i < size1; ++i) {
+                for (int j = 0; j < size1; ++j) {
+                    file1 >> arr[i][j];
+                }
             }
-        }
-        file1<<game1->score<<endl;
+            file1 >> game1->score;
+            file1.close();
+            gui();
 
-        file1.close();
+            while (true){
+
+                game2();
+                //save
+                file1.open(name, ios::out);
+
+                for (int i = 0; i < size1; ++i) {
+                    for (int j = 0; j < size1; ++j) {
+                        file1 << arr[i][j] << endl;
+                    }
+                }
+                file1 << game1->score << endl;
+
+                file1.close();
+            }
+            cout<< "GAME OVER\n";
+            break;
+        case 3:
+            cout << "This is instruction to 2048\n";
+            cout << "This game is very simple.\n"
+                    "To move you use the keys w (up), s (down), a (left), d (right).\n"
+                    "The game is about connecting the same tiles together until you reach the 2048 tile.\n"
+                    "When you run out of moves, the game is over.\n"
+                    "Good luck";
+
+            break;
+        case 4:
+            return 0;
+            break;
     }
-
+}
     //Delete array
     for (int i = 0; i < size1; ++i) {
         delete[] arr[i];
@@ -154,16 +158,17 @@ int main(){
     delete [] arr;
     //Delete structure
     delete game1;
+    delete name;
 
     return 0;
 }
 int** create_matrix(int n,int m){
-    int **tablica = new int*[n];
+    int **ar = new int*[n];
     for (int i = 0; i < n; ++i) {
-        tablica[i] = new int [m];
+        ar[i] = new int [m];
 
     }
-    return tablica;
+    return ar;
 }
 void gui(){
     auto* gui1 = new graphic_interface;
@@ -265,13 +270,47 @@ void rotation(char option){
         }
     }
 }
-void menu(char option){
+void game2(){
+    bool check;
+    int random1;
+    char option;
+    cout << "Insert your next move: ";
 
-//    switch (option) {
-//        case 'q':
-//
-//
-//    }
+    check = true;
+    while (check) {
+        check = false;
+        system("stty raw");
+        cin >> option;
+        system("stty cooked");
 
+        if (option != 'w' && option != 's' && option != 'a' && option != 'd') {
+            check = true;
+            cout << "try these keys to move: \n"
+                    "( w(up)\n"
+                    "  s(down)\n"
+                    "  a(left)\n"
+                    "  d(right) )\n";
+        }
+    }
 
+    rotation(option);
+    move();
+    if (option == 'a') {
+        option = 'd';
+    } else if (option == 'd') {
+        option = 'a';
+    }
+
+    rotation(option);
+
+    cout << "SCORE:   " << endl;
+    while (true) {
+        random1 = rand() % size1;
+
+        if (arr[random1][random1] == 0) {
+            arr[random1][random1] = 2;
+            break;
+        }
+    }
+    gui();
 }
