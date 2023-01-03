@@ -23,15 +23,21 @@ void gui();  // Graphic interface
 void undo(); //undo players move
 void game2();
 void clear_screen();
+void display_loser_screen();
+void display_win_screen();
 
 void rotation(char option);
 
 // int functions
 int numbers(int num);
 int max_tile();
+int check_is_game_over();
 
 //int** functions
 int** create_matrix(int n,int m); // Create dynamic matrix
+
+
+
 
 //global dynamic matrix
 int** arr;
@@ -80,7 +86,7 @@ int main() {
 
 
     const char *name = file_name.c_str();
-    while (true){
+
 
         switch (choise) {
             case '1':
@@ -105,7 +111,7 @@ int main() {
 
                 gui();
 
-                while (true) {
+                while (check_is_game_over()) {
 
                     game2();
 
@@ -140,7 +146,7 @@ int main() {
                 file1.close();
                 gui();
 
-                while (true){
+                while (check_is_game_over()==0){
 
                     game2();
                     //save
@@ -154,6 +160,9 @@ int main() {
                     //  file1 << game1->score << endl;
 
                     file1.close();
+                }
+                if (check_is_game_over() == 2){
+
                 }
                 cout<< "GAME OVER\n";
                 break;
@@ -171,7 +180,7 @@ int main() {
                 return 0;
                 break;
         }
-    }
+
     //Delete array
     for (int i = 0; i < size1; ++i) {
         delete[] arr[i];
@@ -255,7 +264,7 @@ void move(){
 }
 void rotation(char option){
 
-    int temp,shom,score;
+    int temp,shom;
     switch (option) {
 
         case 's':
@@ -299,16 +308,17 @@ void game2(){
     bool check;
     int random1;
     char option;
-    cout << "Insert your next move: ";
+
 
     check = true;
-    while (check) {
+    while (check_is_game_over()== 0) {
         check = false;
+        cout << "Insert your next move: ";
         system("stty raw");
         cin >> option;
         system("stty cooked");
 
-        if (option != 'w' && option != 's' && option != 'a' && option != 'd') {
+        if (option != 'w' && option != 's' && option != 'a' && option != 'd' && option != 'q') {
             check = true;
             cout << "try these keys to move: \n"
                     "( w (up), s (down), a (left), d (right) )";
@@ -318,11 +328,13 @@ void game2(){
 
     rotation(option);
     move();
+
     if (option == 'a') {
         option = 'd';
     } else if (option == 'd') {
         option = 'a';
     }
+
 
     rotation(option);
     cout<<"The greatest tile is: "<<max_tile()<<endl;
@@ -357,4 +369,37 @@ void clear_screen(){
     // Assume POSIX
     system("clear");
 #endif
+}
+int check_is_game_over(){
+
+    int k=1;
+
+    for (int i = 0; i < size1; ++i) {
+        for (int j = 0; j < size1; ++j) {
+            if (!arr[i][j]){
+                k=0;
+            }else if (arr[i][j]==2048){
+                k=2;
+            }
+        }
+    }
+    return k;
+}
+void display_loser_screen(){
+    system("clear");
+
+    cout<<"\n\n\n\t\t\t  [ G A M E  O V E R ] "
+        <<"\n\n\n\n\t\t\t TILE\t     SCORE\t ";
+    cout<<"\n\n\t\t\t"<<max_tile<<"\t"<<"1556";
+
+}
+void display_win_screen(){
+    system("clear");
+
+    cout<<endl<<endl;
+    cout<<"\n\t\t\t   [  YOU MADE 2048!  ] "
+        <<"\n\n\t\t\t   [ YOU WON THE GAME ] "
+        <<"\n\n\n\n\t\t\t TILE\t     SCORE\t";
+    cout<<"\n\n\t\t\t"<<max_tile<<"\t"<<"1556";
+
 }
