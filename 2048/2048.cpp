@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <cmath>
+
 #define size1 4
 
 using namespace std;
@@ -25,6 +27,7 @@ void rotation(char option);
 
 // int functions
 int numbers(int num);
+int max_tile();
 
 //int** functions
 int** create_matrix(int n,int m); // Create dynamic matrix
@@ -77,7 +80,7 @@ int main() {
                     arr[i][j] = 0;
                 }
             }
-            game1->score = 0;
+            //game1->score = 0;
             //ADD random 2 at board
             srand(time(nullptr));
             arr[rand() % size1][rand() % size1] = 2;
@@ -97,7 +100,7 @@ int main() {
                         file1 << arr[i][j] << endl;
                     }
                 }
-                file1 << game1->score << endl;
+               // file1 << game1->score << endl;
 
                 file1.close();
 
@@ -116,7 +119,7 @@ int main() {
                     file1 >> arr[i][j];
                 }
             }
-            file1 >> game1->score;
+           // file1 >> game1->score;
             file1.close();
             gui();
 
@@ -131,7 +134,7 @@ int main() {
                         file1 << arr[i][j] << endl;
                     }
                 }
-                file1 << game1->score << endl;
+              //  file1 << game1->score << endl;
 
                 file1.close();
             }
@@ -234,7 +237,7 @@ void move(){
 }
 void rotation(char option){
 
-    int temp,shom;
+    int temp,shom,score;
     switch (option) {
 
         case 's':
@@ -257,6 +260,8 @@ void rotation(char option){
                     temp = arr[i][j];
                     arr[i][j] = arr[j][i];
                     arr[j][i] = temp;
+
+
                 }
             }
         }
@@ -266,9 +271,11 @@ void rotation(char option){
                 temp = arr[i][j];
                 arr[i][j] = arr[i][size1 - j - 1];
                 arr[i][size1 - j - 1] = temp;
+
             }
         }
     }
+
 }
 void game2(){
     bool check;
@@ -302,8 +309,8 @@ void game2(){
     }
 
     rotation(option);
+    cout<<"The greatest tile is: "<<max_tile()<<endl;
 
-    cout << "SCORE:   " << endl;
     while (true) {
         random1 = rand() % size1;
 
@@ -313,4 +320,17 @@ void game2(){
         }
     }
     gui();
+}
+int max_tile(){
+
+    int max;
+    max = arr[0][0];
+    for (int i = 0; i < size1; ++i) {
+        for (int j = 0; j < size1; ++j) {
+            if (arr[i][j] > max){
+                max = arr[i][j];
+            }
+        }
+    }
+    return max;
 }
