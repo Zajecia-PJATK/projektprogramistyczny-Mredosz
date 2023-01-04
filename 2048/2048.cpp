@@ -13,9 +13,6 @@ using namespace std;
 struct graphic_interface{
     int r,l,top,down,space,x;
 };
-struct game{
-    int score;
-};
 
 //void functions
 void move(); //function to move
@@ -66,8 +63,6 @@ int main() {
     system("stty cooked");
     clear_screen();
 
-    auto *game1 = new game;
-
     arr = create_matrix(size1, size1); //create matrix
     arr2 = create_matrix(size1, size1);
     //load and create file
@@ -87,7 +82,7 @@ int main() {
 
 
     const char *name = file_name.c_str();
-
+    int scoree = score();
 
         switch (choise) {
             case '1':
@@ -101,7 +96,7 @@ int main() {
                         arr[i][j] = 0;
                     }
                 }
-                //game1->score = 0;
+                scoree = 0;
                 //ADD random 2 at board
                 srand(time(nullptr));
                 arr[rand() % size1][rand() % size1] = 2;
@@ -124,7 +119,7 @@ int main() {
                                 file1 << arr[i][j] << endl;
                             }
                         }
-                        // file1 << game1->score << endl;
+                         file1 << scoree << endl;
 
                         file1.close();
 
@@ -150,7 +145,7 @@ int main() {
                         file1 >> arr[i][j];
                     }
                 }
-                // file1 >> game1->score;
+                file1 >> scoree;
                 file1.close();
                 gui();
 
@@ -166,7 +161,7 @@ int main() {
                                 file1 << arr[i][j] << endl;
                             }
                         }
-                        //  file1 << game1->score << endl;
+                        file1 << scoree << endl;
 
                         file1.close();
                     } else if (check_is_game_over() == 2){
@@ -198,8 +193,7 @@ int main() {
         delete[] arr[i];
     }
     delete [] arr;
-    //Delete structure
-    delete game1;
+
     delete name;
 
     return 0;
@@ -213,6 +207,10 @@ int** create_matrix(int n,int m){
     return ar;
 }
 void gui(){
+
+    cout<<"The greatest tile is: "<<max_tile()<<endl<<endl;
+    cout<<"SCORE: "<<score()<<endl;
+
     auto* gui1 = new graphic_interface;
 //Top of square
     for (gui1->r = 0;gui1->r  < size1; ++gui1->r) {
@@ -349,7 +347,7 @@ void game2(){
 
 
     rotation(option);
-    cout<<"The greatest tile is: "<<max_tile()<<endl<<endl;
+
 
     while (true) {
         random1 = rand() % size1;
@@ -402,7 +400,7 @@ void display_loser_screen(){
 
     cout<<"\n\n\n\t\t\t  [ G A M E  O V E R ] "
         <<"\n\n\n\n\t\t\t TILE\t     SCORE\t ";
-    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<"1556";
+    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<score();
 
 }
 void display_win_screen(){
@@ -412,6 +410,13 @@ void display_win_screen(){
     cout<<"\n\t\t\t   [  YOU MADE 2048!  ] "
         <<"\n\n\t\t\t   [ YOU WON THE GAME ] "
         <<"\n\n\n\n\t\t\t TILE\t     SCORE\t";
-    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<"1556";
+    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<score();
 
+}
+int score(){
+    int score = 0;
+
+    score+=(((log2(max_tile()))-1)*max_tile());
+
+    return score;
 }
