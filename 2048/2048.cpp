@@ -17,7 +17,6 @@ struct graphic_interface{
 //void functions
 void move(); //function to move
 void gui();  // Graphic interface
-void undo(); //undo players move
 void game2();
 void clear_screen();
 void display_loser_screen();
@@ -38,6 +37,7 @@ int** create_matrix(int n,int m); // Create dynamic matrix
 //global dynamic matrix
 int** arr;
 
+bool play_again();
 
 int main() {
 
@@ -67,7 +67,7 @@ int main() {
     switch (choise) {
         //create new board
         case '1':
-            cout << "Inster your name game\n";
+            cout << "Insert your name game\n";
 
             cin >> file_name;
 
@@ -105,16 +105,18 @@ int main() {
 
                 } else if (check_is_game_over() == 2) {
                     display_win_screen();
-                    return 0;
+                    break;
                 } else if (check_is_game_over() == 0) {
                     display_loser_screen();
-                    return 0;
+                    break;
                 }
-
             }
+            //play again
+            cont = play_again();
+
             break;
         case '2':
-            cout << "Inster your name game\n";
+            cout << "Insert your name game\n";
 
             cin >> file_name;
 
@@ -146,13 +148,15 @@ int main() {
                     file1.close();
                 } else if (check_is_game_over() == 2) {
                     display_win_screen();
-
-                    return 0;
+                    break;
                 } else if (check_is_game_over() == 0) {
                     display_loser_screen();
-                    return 0;
+                    break;
                 }
             }
+            //play again
+            cont = play_again();
+
             break;
         case '3':
             clear_screen();
@@ -161,7 +165,7 @@ int main() {
                     "To move you use the keys w (up), s (down), a (left), d (right).\n"
                     "The game is about connecting the same tiles together until you reach the 2048 tile.\n"
                     "When you run out of moves, the game is over.\n"
-                    "Good luck\n";
+                    "Good luck\n\n";
             cont = true;
             break;
 
@@ -229,6 +233,8 @@ void gui(){
         }
         cout<<endl;
     }
+
+    cout<<endl<<"q - Quit\n\n";
     delete gui1;
 }
 int numbers(int num){
@@ -323,6 +329,10 @@ void game2(){
                     "( w (up), s (down), a (left), d (right) )";
         }
     }
+    //Exit from game
+    if (option == 'q'){
+        ::abort();
+    }
     clear_screen();
     rotation(option);
     move();
@@ -384,21 +394,21 @@ int check_is_game_over() {
     return k;
 }
 void display_loser_screen(){
-    system("clear");
+    clear_screen();
 
-    cout<<"\n\n\n\t\t\t  [ G A M E  O V E R ] "
-        <<"\n\n\n\n\t\t\t TILE\t     SCORE\t ";
-    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<score();
+    cout<<"\n\n\n\t\t [ G A M E  O V E R ] "
+            <<"\n\n\n\t\t   TILE\t     SCORE\t";
+    cout<<"\n\n\t\t    "<<max_tile()<<"\t       "<<score();
 
 }
 void display_win_screen(){
-    system("clear");
+    clear_screen();
 
     cout<<endl<<endl;
-    cout<<"\n\t\t\t   [  YOU MADE 2048!  ] "
-        <<"\n\n\t\t\t   [ YOU WON THE GAME ] "
-        <<"\n\n\n\n\t\t\t TILE\t     SCORE\t";
-    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<score();
+    cout<<"\n\t\t  [  YOU MADE 2048!  ] "
+        <<"\n\n\t\t  [ YOU WON THE GAME ] "
+        <<"\n\n\n\t\t   TILE\t     SCORE\t";
+    cout<<"\n\n\t\t   "<<max_tile()<<"\t     "<<score();
 
 }
 void display_start_screen(){
@@ -431,4 +441,28 @@ int score(){
         }
     }
     return score;
+}
+bool play_again(){
+    //play again
+    char again;
+    bool cont;
+    bool spr ;
+    do {
+
+        cout<<"\n\n\n\t    > Would you like to try again  (y/n) ? \n\n ";
+        cin >> again;
+        if (again == 'y') {
+            clear_screen();
+            cont = true;
+            spr = true;
+        } else if (again == 'n') {
+            clear_screen();
+            return 0;
+        } else {
+            clear_screen();
+            cout << "You have entered the wrong data.\n\n";
+            spr = false;
+        }
+    } while (!spr);
+    return cont;
 }
