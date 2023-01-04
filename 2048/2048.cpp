@@ -32,6 +32,7 @@ void rotation(char option);
 int numbers(int num);
 int max_tile();
 int check_is_game_over();
+int score();
 
 //int** functions
 int** create_matrix(int n,int m); // Create dynamic matrix
@@ -111,24 +112,31 @@ int main() {
 
                 gui();
 
-                while (check_is_game_over()) {
+                while (true) {
+                    if (check_is_game_over() == 1) {
+                        game2();
 
-                    game2();
+                        file1.open(name, ios::out);
 
-                    file1.open(name, ios::out);
-
-                    //save
-                    for (int i = 0; i < size1; ++i) {
-                        for (int j = 0; j < size1; ++j) {
-                            file1 << arr[i][j] << endl;
+                        //save
+                        for (int i = 0; i < size1; ++i) {
+                            for (int j = 0; j < size1; ++j) {
+                                file1 << arr[i][j] << endl;
+                            }
                         }
-                    }
-                    // file1 << game1->score << endl;
+                        // file1 << game1->score << endl;
 
-                    file1.close();
+                        file1.close();
+
+                    }else if (check_is_game_over() == 2){
+                        display_win_screen();
+                        return 0;
+                    } else if (check_is_game_over() == 0) {
+                        display_loser_screen();
+                        return 0;
+                    }
 
                 }
-                cout<< "GAME OVER\n";
                 break;
             case '2':
                 cout << "Inster your name game\n";
@@ -146,25 +154,29 @@ int main() {
                 file1.close();
                 gui();
 
-                while (check_is_game_over()==0){
+                while (true){
+                    if (check_is_game_over()==1) {
 
-                    game2();
-                    //save
-                    file1.open(name, ios::out);
+                        game2();
+                        //save
+                        file1.open(name, ios::out);
 
-                    for (int i = 0; i < size1; ++i) {
-                        for (int j = 0; j < size1; ++j) {
-                            file1 << arr[i][j] << endl;
+                        for (int i = 0; i < size1; ++i) {
+                            for (int j = 0; j < size1; ++j) {
+                                file1 << arr[i][j] << endl;
+                            }
                         }
+                        //  file1 << game1->score << endl;
+
+                        file1.close();
+                    } else if (check_is_game_over() == 2){
+                        display_win_screen();
+                        return 0;
+                    } else if (check_is_game_over() == 0){
+                        display_loser_screen();
+                        return 0;
                     }
-                    //  file1 << game1->score << endl;
-
-                    file1.close();
                 }
-                if (check_is_game_over() == 2){
-
-                }
-                cout<< "GAME OVER\n";
                 break;
             case '3':
                 cout << "This is instruction to 2048\n";
@@ -311,7 +323,7 @@ void game2(){
 
 
     check = true;
-    while (check_is_game_over()== 0) {
+    while (check) {
         check = false;
         cout << "Insert your next move: ";
         system("stty raw");
@@ -337,7 +349,7 @@ void game2(){
 
 
     rotation(option);
-    cout<<"The greatest tile is: "<<max_tile()<<endl;
+    cout<<"The greatest tile is: "<<max_tile()<<endl<<endl;
 
     while (true) {
         random1 = rand() % size1;
@@ -370,16 +382,16 @@ void clear_screen(){
     system("clear");
 #endif
 }
-int check_is_game_over(){
+int check_is_game_over() {
 
-    int k=1;
+    int k = 0;
 
     for (int i = 0; i < size1; ++i) {
         for (int j = 0; j < size1; ++j) {
-            if (!arr[i][j]){
-                k=0;
-            }else if (arr[i][j]==2048){
-                k=2;
+            if (max_tile() == 2048) {
+                k = 2;
+            } else{
+                k = 1;
             }
         }
     }
@@ -390,7 +402,7 @@ void display_loser_screen(){
 
     cout<<"\n\n\n\t\t\t  [ G A M E  O V E R ] "
         <<"\n\n\n\n\t\t\t TILE\t     SCORE\t ";
-    cout<<"\n\n\t\t\t"<<max_tile<<"\t"<<"1556";
+    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<"1556";
 
 }
 void display_win_screen(){
@@ -400,6 +412,6 @@ void display_win_screen(){
     cout<<"\n\t\t\t   [  YOU MADE 2048!  ] "
         <<"\n\n\t\t\t   [ YOU WON THE GAME ] "
         <<"\n\n\n\n\t\t\t TILE\t     SCORE\t";
-    cout<<"\n\n\t\t\t"<<max_tile<<"\t"<<"1556";
+    cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<"1556";
 
 }
