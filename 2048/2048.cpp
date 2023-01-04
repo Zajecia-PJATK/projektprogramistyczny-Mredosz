@@ -330,11 +330,15 @@ void game2(){
 int max_tile(){
 
     int max;
-    int l = -9;
     max = arr[0][0];
 
-    if (l > max)
-    max = l;
+    for (int i = 0; i < size1; ++i) {
+        for (int j = 0; j < size1; ++j) {
+            if (arr[i][j]>max){
+                max = arr[i][j];
+            }
+        }
+    }
     return max;
 }
 void clear_screen(){
@@ -409,7 +413,7 @@ int score(){
     int score = 0;
     for (int i = 0; i < size1; ++i) {
         for (int j = 0; j < size1; ++j) {
-            score+=(((log2(max_tile()))-1)*arr[i][j]/2);
+            score+=(((log2(max_tile()))-1)*arr[i][j]);
         }
     }
     return score;
