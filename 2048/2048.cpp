@@ -43,9 +43,19 @@ int main() {
 
     string file_name;
     arr = create_matrix(size1, size1); //create matrix
-
+    const char *name = file_name.c_str();
+    int scoree = score();
+    bool cont = true;
 
     display_start_screen();
+
+    while(cont) {
+
+        cout << "Chose option: " << endl;
+        cout << "1. Start New Game\n";
+        cout << "2. Load Previous Game\n";
+        cout << "3. Instruction\n";
+        cout << "4. Quit\n";
 
     char choise;
     system("stty raw");
@@ -53,113 +63,120 @@ int main() {
     system("stty cooked");
     fstream file1;
 
-    const char *name = file_name.c_str();
-    int scoree = score();
+    cont = false;
+    switch (choise) {
+        //create new board
+        case '1':
+            cout << "Inster your name game\n";
 
-        switch (choise) {
-            //create new board
-            case '1':
-                cout << "Inster your name game\n";
+            cin >> file_name;
 
-                cin >> file_name;
-
-                file1.open(name, ios::in);
-                for (int i = 0; i < size1; ++i) {
-                    for (int j = 0; j < size1; ++j) {
-                        arr[i][j] = 0;
-                    }
+            file1.open(name, ios::in);
+            for (int i = 0; i < size1; ++i) {
+                for (int j = 0; j < size1; ++j) {
+                    arr[i][j] = 0;
                 }
-                scoree = 0;
-                //ADD random 2 at board
-                srand(time(nullptr));
-                arr[rand() % size1][rand() % size1] = 2;
-                arr[rand() % size1][rand() % size1] = 2;
-                file1.close();
+            }
+            scoree = 0;
+            //ADD random 2 at board
+            srand(time(nullptr));
+            arr[rand() % size1][rand() % size1] = 2;
+            arr[rand() % size1][rand() % size1] = 2;
+            file1.close();
 
-                clear_screen();
-                gui();
+            clear_screen();
+            gui();
 
-                while (true) {
-                    if (check_is_game_over() == 1) {
-                        game2();
+            while (true) {
+                if (check_is_game_over() == 1) {
+                    game2();
 
-                        file1.open(name, ios::out);
+                    file1.open(name, ios::out);
 
-                        //save
-                        for (int i = 0; i < size1; ++i) {
-                            for (int j = 0; j < size1; ++j) {
-                                file1 << arr[i][j] << endl;
-                            }
+                    //save
+                    for (int i = 0; i < size1; ++i) {
+                        for (int j = 0; j < size1; ++j) {
+                            file1 << arr[i][j] << endl;
                         }
-                         file1 << scoree << endl;
-
-                        file1.close();
-
-                    }else if (check_is_game_over() == 2){
-                        display_win_screen();
-                        return 0;
-                    } else if (check_is_game_over() == 0) {
-                        display_loser_screen();
-                        return 0;
                     }
+                    file1 << scoree << endl;
 
+                    file1.close();
+
+                } else if (check_is_game_over() == 2) {
+                    display_win_screen();
+                    return 0;
+                } else if (check_is_game_over() == 0) {
+                    display_loser_screen();
+                    return 0;
                 }
-                break;
-            case '2':
-                cout << "Inster your name game\n";
 
-                cin >> file_name;
+            }
+            break;
+        case '2':
+            cout << "Inster your name game\n";
+
+            cin >> file_name;
 
 
-                file1.open(name, ios::in);
-                for (int i = 0; i < size1; ++i) {
-                    for (int j = 0; j < size1; ++j) {
-                        file1 >> arr[i][j];
-                    }
+            file1.open(name, ios::in);
+            for (int i = 0; i < size1; ++i) {
+                for (int j = 0; j < size1; ++j) {
+                    file1 >> arr[i][j];
                 }
-                file1 >> scoree;
-                file1.close();
-                gui();
+            }
+            file1 >> scoree;
+            file1.close();
+            gui();
 
-                while (true){
-                    if (check_is_game_over()==1) {
+            while (true) {
+                if (check_is_game_over() == 1) {
 
-                        game2();
-                        //save
-                        file1.open(name, ios::out);
+                    game2();
+                    //save
+                    file1.open(name, ios::out);
 
-                        for (int i = 0; i < size1; ++i) {
-                            for (int j = 0; j < size1; ++j) {
-                                file1 << arr[i][j] << endl;
-                            }
+                    for (int i = 0; i < size1; ++i) {
+                        for (int j = 0; j < size1; ++j) {
+                            file1 << arr[i][j] << endl;
                         }
-                        file1 << scoree << endl;
-
-                        file1.close();
-                    } else if (check_is_game_over() == 2){
-                        display_win_screen();
-                        return 0;
-                    } else if (check_is_game_over() == 0){
-                        display_loser_screen();
-                        return 0;
                     }
+                    file1 << scoree << endl;
+
+                    file1.close();
+                } else if (check_is_game_over() == 2) {
+                    display_win_screen();
+                    return 0;
+                } else if (check_is_game_over() == 0) {
+                    display_loser_screen();
+                    return 0;
                 }
-                break;
-            case '3':
-                cout << "This is instruction to 2048\n";
-                cout << "This game is very simple.\n"
-                        "To move you use the keys w (up), s (down), a (left), d (right).\n"
-                        "The game is about connecting the same tiles together until you reach the 2048 tile.\n"
-                        "When you run out of moves, the game is over.\n"
-                        "Good luck";
+            }
+            break;
+        case '3':
+            clear_screen();
+            cout << "This is instruction to 2048\n";
+            cout << "This game is very simple.\n"
+                    "To move you use the keys w (up), s (down), a (left), d (right).\n"
+                    "The game is about connecting the same tiles together until you reach the 2048 tile.\n"
+                    "When you run out of moves, the game is over.\n"
+                    "Good luck\n";
+            cont = true;
+            break;
 
-                break;
+        case '4':
+            clear_screen();
+            return 0;
+            break;
+        default:
+            clear_screen();
+            cout << "You have entered the wrong data.\n\n";
 
-            case '4':
-                return 0;
-                break;
-        }
+            cont = true;
+            break;
+    }
 
+}
     //Delete array
     for (int i = 0; i < size1; ++i) {
         delete[] arr[i];
@@ -403,11 +420,7 @@ void display_start_screen(){
 
     clear_screen();
 
-    cout << "Chose option: " << endl;
-    cout << "1. Start New Game\n";
-    cout << "2. Load Previous Game\n";
-    cout << "3. Instruction\n";
-    cout << "4. Quit\n";
+
 }
 int score(){
     int score = 0;
