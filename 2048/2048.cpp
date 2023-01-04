@@ -146,6 +146,7 @@ int main() {
                     file1.close();
                 } else if (check_is_game_over() == 2) {
                     display_win_screen();
+
                     return 0;
                 } else if (check_is_game_over() == 0) {
                     display_loser_screen();
@@ -305,7 +306,7 @@ void rotation(char option){
 }
 void game2(){
     bool check;
-    int random1;
+    int random1,random2;
     char option;
 
     check = true;
@@ -336,9 +337,10 @@ void game2(){
 
     while (true) {
         random1 = rand() % size1;
+        random2 = rand() % size1;
 
-        if (arr[random1][random1] == 0) {
-            arr[random1][random1] = 2;
+        if (arr[random1][random2] == 0) {
+            arr[random1][random2] = 2;
             break;
         }
     }
@@ -374,7 +376,7 @@ int check_is_game_over() {
         for (int j = 0; j < size1; ++j) {
             if (max_tile() == 2048) {
                 k = 2;
-            } else{
+            } else if (!arr[i][j]){
                 k = 1;
             }
         }
@@ -419,7 +421,6 @@ void display_start_screen(){
     system("stty cooked");
 
     clear_screen();
-
 
 }
 int score(){
