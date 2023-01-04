@@ -22,7 +22,7 @@ void game2();
 void clear_screen();
 void display_loser_screen();
 void display_win_screen();
-
+void display_start_screen();
 void rotation(char option);
 
 // int functions
@@ -35,43 +35,17 @@ int score();
 int** create_matrix(int n,int m); // Create dynamic matrix
 
 
-
-
 //global dynamic matrix
 int** arr;
-int** arr2;
 
 
 int main() {
-    char zero;
+
     string file_name;
-
-    // say hello to players
-
-    cout << "\t\t   ___       __   __ __       __     \n"
-            "\t\t /'___`\\   /'__`\\/\\ \\\\ \\    /'_ `\\   \n"
-            "\t\t/\\_\\ /\\ \\ /\\ \\/\\ \\ \\ \\\\ \\  /\\ \\L\\ \\  \n"
-            "\t\t\\/_/// /__\\ \\ \\ \\ \\ \\ \\\\ \\_\\/_> _ <_ \n"
-            "\t\t   // /_\\ \\\\ \\ \\_\\ \\ \\__ ,__\\/\\ \\L\\ \\\n"
-            "\t\t  /\\______/ \\ \\____/\\/_/\\_\\_/\\ \\____/\n"
-            "\t\t  \\/_____/   \\/___/    \\/_/   \\/___/ \n\n\n";
-
-    cout<<"\t\t\tPress any key to continue\n";
-
-    system("stty raw");
-    cin>>zero;
-    system("stty cooked");
-    clear_screen();
-
     arr = create_matrix(size1, size1); //create matrix
-    arr2 = create_matrix(size1, size1);
-    //load and create file
-    //Load saved file
-    cout << "Chose option: " << endl;
-    cout << "1. Start New Game\n";
-    cout << "2. Load Previous Game\n";
-    cout << "3. Instruction\n";
-    cout << "4. Quit\n";
+
+
+    display_start_screen();
 
     char choise;
     system("stty raw");
@@ -79,12 +53,11 @@ int main() {
     system("stty cooked");
     fstream file1;
 
-
-
     const char *name = file_name.c_str();
     int scoree = score();
 
         switch (choise) {
+            //create new board
             case '1':
                 cout << "Inster your name game\n";
 
@@ -104,7 +77,6 @@ int main() {
                 file1.close();
 
                 clear_screen();
-
                 gui();
 
                 while (true) {
@@ -319,7 +291,6 @@ void game2(){
     int random1;
     char option;
 
-
     check = true;
     while (check) {
         check = false;
@@ -335,7 +306,6 @@ void game2(){
         }
     }
     clear_screen();
-
     rotation(option);
     move();
 
@@ -345,9 +315,7 @@ void game2(){
         option = 'a';
     }
 
-
     rotation(option);
-
 
     while (true) {
         random1 = rand() % size1;
@@ -362,14 +330,11 @@ void game2(){
 int max_tile(){
 
     int max;
+    int l = -9;
     max = arr[0][0];
-    for (int i = 0; i < size1; ++i) {
-        for (int j = 0; j < size1; ++j) {
-            if (arr[i][j] > max){
-                max = arr[i][j];
-            }
-        }
-    }
+
+    if (l > max)
+    max = l;
     return max;
 }
 void clear_screen(){
@@ -413,10 +378,39 @@ void display_win_screen(){
     cout<<"\n\n\t\t\t "<<max_tile()<<"\t     "<<score();
 
 }
+void display_start_screen(){
+    char zero;
+
+    // say hello to players
+
+    cout << "\t\t   ___       __   __ __       __     \n"
+            "\t\t /'___`\\   /'__`\\/\\ \\\\ \\    /'_ `\\   \n"
+            "\t\t/\\_\\ /\\ \\ /\\ \\/\\ \\ \\ \\\\ \\  /\\ \\L\\ \\  \n"
+            "\t\t\\/_/// /__\\ \\ \\ \\ \\ \\ \\\\ \\_\\/_> _ <_ \n"
+            "\t\t   // /_\\ \\\\ \\ \\_\\ \\ \\__ ,__\\/\\ \\L\\ \\\n"
+            "\t\t  /\\______/ \\ \\____/\\/_/\\_\\_/\\ \\____/\n"
+            "\t\t  \\/_____/   \\/___/    \\/_/   \\/___/ \n\n\n";
+
+    cout<<"\t\t\tPress any key to continue\n";
+
+    system("stty raw");
+    cin>>zero;
+    system("stty cooked");
+
+    clear_screen();
+
+    cout << "Chose option: " << endl;
+    cout << "1. Start New Game\n";
+    cout << "2. Load Previous Game\n";
+    cout << "3. Instruction\n";
+    cout << "4. Quit\n";
+}
 int score(){
     int score = 0;
-
-    score+=(((log2(max_tile()))-1)*max_tile());
-
+    for (int i = 0; i < size1; ++i) {
+        for (int j = 0; j < size1; ++j) {
+            score+=(((log2(max_tile()))-1)*arr[i][j]/2);
+        }
+    }
     return score;
 }
